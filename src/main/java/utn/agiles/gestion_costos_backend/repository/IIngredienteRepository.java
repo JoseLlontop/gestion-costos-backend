@@ -1,4 +1,10 @@
 package utn.agiles.gestion_costos_backend.repository;
 
-public interface IIngredienteRepository {
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+import utn.agiles.gestion_costos_backend.model.IngredienteModel;
+
+@Repository
+public interface IIngredienteRepository extends JpaRepository<IngredienteModel, Long> {
+
 }
