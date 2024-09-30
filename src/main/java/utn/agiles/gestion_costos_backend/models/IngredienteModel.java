@@ -24,9 +24,6 @@ public class IngredienteModel {
     @Column(name = "unidad_medida")
     private String unidad_medida;
 
-    @Column(name = "precio")
-    private float precio;
-
     @Column(name = "stock")
     private int stock;
 

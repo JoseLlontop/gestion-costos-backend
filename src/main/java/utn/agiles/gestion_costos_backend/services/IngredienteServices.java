@@ -32,7 +32,6 @@ public class IngredienteServices {
                     ingrediente.setNombre(detallesIngrediente.getNombre());
                     ingrediente.setUnidad_medida(detallesIngrediente.getUnidad_medida());
                     ingrediente.setCosto_unidad(detallesIngrediente.getCosto_unidad());
-                    ingrediente.setPrecio(detallesIngrediente.getPrecio());
                     ingrediente.setStock(detallesIngrediente.getStock());
                     return ingredienteRepository.save(ingrediente);
                 }).orElseThrow(() -> new RuntimeException("Ingrediente no encontrado"));
