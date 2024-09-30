@@ -1,47 +1,49 @@
 package utn.agiles.gestion_costos_backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import utn.agiles.gestion_costos_backend.models.IngredienteModel;
-import utn.agiles.gestion_costos_backend.services.IngredienteService;
+import utn.agiles.gestion_costos_backend.services.IngredienteServices;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/ingrediente")
+@RequestMapping("/api")
 public class IngredienteController {
 
     @Autowired
-    private IngredienteService ingredienteService;
+    private IngredienteServices ingredienteServices;
 
-    @PostMapping("/crear")
+    @PostMapping("ingredientes/crear")
     public IngredienteModel crearIngrediente(@RequestBody IngredienteModel ingrediente){
-        return this.ingredienteService.crearIngrediente(ingrediente);
+        return this.ingredienteServices.crearIngrediente(ingrediente);
     }
 
-    @GetMapping
+    @GetMapping("/api/ingredientes")
     public List<IngredienteModel> obtenerTodosLosIngredientes() {
-        return ingredienteService.obtenerTodosLosIngredientes();
+        return ingredienteServices.obtenerTodosLosIngredientes();
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<IngredienteModel> obtenerIngredientePorId(@PathVariable Long id) {
-        return ingredienteService.obtenerIngredientePorId(id)
+        return ingredienteServices.obtenerIngredientePorId(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<IngredienteModel> actualizarIngrediente(@PathVariable Long id, @RequestBody IngredienteModel detallesIngrediente) {
-        return ingredienteService.actualizarIngrediente(id, detallesIngrediente) != null
+        return ingredienteServices.actualizarIngrediente(id, detallesIngrediente) != null
                 ? ResponseEntity.ok(detallesIngrediente)
                 : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarIngrediente(@PathVariable Long id) {
-        ingredienteService.eliminarIngrediente(id);
+        ingredienteServices.eliminarIngrediente(id);
         return ResponseEntity.noContent().build();
     }
 
