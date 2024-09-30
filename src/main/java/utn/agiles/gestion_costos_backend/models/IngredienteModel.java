@@ -1,4 +1,4 @@
-package utn.agiles.gestion_costos_backend.model;
+package utn.agiles.gestion_costos_backend.models;
 
 import jakarta.persistence.*;
 import lombok.Getter;

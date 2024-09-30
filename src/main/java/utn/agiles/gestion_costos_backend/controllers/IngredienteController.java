@@ -1,10 +1,10 @@
-package utn.agiles.gestion_costos_backend.controller;
+package utn.agiles.gestion_costos_backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import utn.agiles.gestion_costos_backend.model.IngredienteModel;
-import utn.agiles.gestion_costos_backend.service.IngredienteService;
+import utn.agiles.gestion_costos_backend.models.IngredienteModel;
+import utn.agiles.gestion_costos_backend.services.IngredienteService;
 
 import java.util.List;
 
