@@ -18,32 +18,32 @@ public class IngredienteController {
     private IngredienteServices ingredienteServices;
 
     @PostMapping("ingredientes/crear")
-    public IngredienteModel crearIngrediente(@RequestBody IngredienteModel ingrediente){
-        return this.ingredienteServices.crearIngrediente(ingrediente);
+    public IngredienteModel createIngrediente(@RequestBody IngredienteModel ingrediente){
+        return this.ingredienteServices.createIngrediente(ingrediente);
     }
 
-    @GetMapping("/api/ingredientes")
-    public List<IngredienteModel> obtenerTodosLosIngredientes() {
-        return ingredienteServices.obtenerTodosLosIngredientes();
+    @GetMapping("/ingredientes")
+    public List<IngredienteModel> getIngredientes() {
+        return ingredienteServices.getIngredientes();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<IngredienteModel> obtenerIngredientePorId(@PathVariable Long id) {
-        return ingredienteServices.obtenerIngredientePorId(id)
+    public ResponseEntity<IngredienteModel> getIngredientePorId(@PathVariable Long id) {
+        return ingredienteServices.getIngredientePorId(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<IngredienteModel> actualizarIngrediente(@PathVariable Long id, @RequestBody IngredienteModel detallesIngrediente) {
-        return ingredienteServices.actualizarIngrediente(id, detallesIngrediente) != null
+    public ResponseEntity<IngredienteModel> updateIngrediente(@PathVariable Long id, @RequestBody IngredienteModel detallesIngrediente) {
+        return ingredienteServices.updateIngrediente(id, detallesIngrediente) != null
                 ? ResponseEntity.ok(detallesIngrediente)
                 : ResponseEntity.notFound().build();
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> eliminarIngrediente(@PathVariable Long id) {
-        ingredienteServices.eliminarIngrediente(id);
+    public ResponseEntity<Void> deleteIngrediente(@PathVariable Long id) {
+        ingredienteServices.deleteIngrediente(id);
         return ResponseEntity.noContent().build();
     }
 

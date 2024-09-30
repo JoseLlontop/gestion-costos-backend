@@ -14,29 +14,31 @@ public class IngredienteServices {
     @Autowired
     IIngredienteRepository ingredienteRepository;
 
-    public List<IngredienteModel> obtenerTodosLosIngredientes() {
+    public List<IngredienteModel> getIngredientes() {
         return ingredienteRepository.findAll();
     }
 
-    public Optional<IngredienteModel> obtenerIngredientePorId(Long id) {
+    public Optional<IngredienteModel> getIngredientePorId(Long id) {
         return ingredienteRepository.findById(id);
     }
 
-    public IngredienteModel crearIngrediente(IngredienteModel ingrediente){
+    public IngredienteModel createIngrediente(IngredienteModel ingrediente){
         return ingredienteRepository.save(ingrediente);
     }
 
-    public IngredienteModel actualizarIngrediente(Long id, IngredienteModel detallesIngrediente) {
+    public IngredienteModel updateIngrediente(Long id, IngredienteModel detallesIngrediente) {
         return ingredienteRepository.findById(id)
                 .map(ingrediente -> {
                     ingrediente.setNombre(detallesIngrediente.getNombre());
-                    ingrediente.setUnidad(detallesIngrediente.getUnidad());
+                    ingrediente.setUnidad_medida(detallesIngrediente.getUnidad_medida());
+                    ingrediente.setCosto_unidad(detallesIngrediente.getCosto_unidad());
                     ingrediente.setPrecio(detallesIngrediente.getPrecio());
+                    ingrediente.setStock(detallesIngrediente.getStock());
                     return ingredienteRepository.save(ingrediente);
                 }).orElseThrow(() -> new RuntimeException("Ingrediente no encontrado"));
     }
 
-    public void eliminarIngrediente(Long id) {
+    public void deleteIngrediente(Long id) {
         ingredienteRepository.deleteById(id);
     }
 }
