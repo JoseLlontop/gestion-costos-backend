@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RecetaService {
+public class RecetaServices {
     @Autowired
     IRecetaRepository recetaRepository;
 

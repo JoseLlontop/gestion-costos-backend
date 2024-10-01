@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class IngredienteXRecetaService {
+public class IngredienteXRecetaServices {
     @Autowired
     private IIngredienteXRecetaRepository ingredienteXRecetaRepository;
 
@@ -28,6 +28,7 @@ public class IngredienteXRecetaService {
         return ingredienteXRecetaRepository.save(ingredienteXReceta);
 
     } //* falta manejo de errores */
+
 
     //! tengo que hacer el repository de IngredienteXRecetaId para obtener el id con las dos foraneas y luego usarlo
     

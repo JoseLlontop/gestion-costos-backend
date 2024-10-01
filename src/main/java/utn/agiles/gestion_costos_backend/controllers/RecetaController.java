@@ -14,14 +14,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import utn.agiles.gestion_costos_backend.models.RecetaModel;
-import utn.agiles.gestion_costos_backend.services.RecetaService;
+import utn.agiles.gestion_costos_backend.services.RecetaServices;
 
 @RestController
 @RequestMapping("/api")
 public class RecetaController {
     
     @Autowired
-    private RecetaService recetaServices;
+    private RecetaServices recetaServices;
 
     @PostMapping("receta/crear")
     public RecetaModel createReceta(@RequestBody RecetaModel receta){
