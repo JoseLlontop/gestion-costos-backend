@@ -8,8 +8,14 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name= "ingredienteXreceta")
-public class IngredienteXReceta {
+public class IngredienteXRecetaModel {
 
+    @Column(name = "cantidad")
+    private float cantidad;
+
+    @Column(name = "costo")
+    private float costo;
     
-    
+
+
 }
