@@ -31,7 +31,7 @@ public class IngredienteXRecetaService {
 
     //! tengo que hacer el repository de IngredienteXRecetaId para obtener el id con las dos foraneas y luego usarlo
     
-    public boolean deleteIngredienteXReceta (Long recetaId , Long IngredienteId){
+    public boolean deleteIngredienteXReceta (Long recetaId , Long ingredienteId){
         IngredienteXRecetaId id = new IngredienteXRecetaId(recetaId , ingredienteId);
         if (ingredienteXRecetaRepository.existsById(id)){
             ingredienteXRecetaRepository.deleteById(id);
