@@ -17,18 +17,18 @@ import utn.agiles.gestion_costos_backend.models.RecetaModel;
 import utn.agiles.gestion_costos_backend.services.RecetaServices;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/recetas")
 public class RecetaController {
     
     @Autowired
     private RecetaServices recetaServices;
 
-    @PostMapping("receta/crear")
+    @PostMapping("/crear")
     public RecetaModel createReceta(@RequestBody RecetaModel receta){
         return this.recetaServices.createReceta(receta);
     }
 
-    @GetMapping("/recetas")
+    @GetMapping
     public List<RecetaModel> getRecetas() {
         return recetaServices.getRecetas();
     }

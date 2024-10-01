@@ -11,18 +11,18 @@ import utn.agiles.gestion_costos_backend.services.IngredienteServices;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/ingredientes")
 public class IngredienteController {
 
     @Autowired
     private IngredienteServices ingredienteServices;
 
-    @PostMapping("ingredientes/crear")
+    @PostMapping("/crear")
     public IngredienteModel createIngrediente(@RequestBody IngredienteModel ingrediente){
         return this.ingredienteServices.createIngrediente(ingrediente);
     }
 
-    @GetMapping("/ingredientes")
+    @GetMapping
     public List<IngredienteModel> getIngredientes() {
         return ingredienteServices.getIngredientes();
     }
