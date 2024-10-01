@@ -18,13 +18,16 @@ public class IngredienteModel {
     @Column(name = "nombre")
     private String nombre;
 
-    @Column(name = "costo_unidad")
-    private float costo_unidad;
+    @Column(name = "marca")
+    private String marca;
+
+    @Column(name = "precio")
+    private float precio;
 
     @Column(name = "unidad_medida")
     private String unidad_medida;
 
-    @Column(name = "stock")
-    private int stock;
+    @Column(name = "cantidad_paquete")
+    private int cantidad_paquete;
 
 }
