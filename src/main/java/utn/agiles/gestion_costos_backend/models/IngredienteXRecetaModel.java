@@ -10,12 +10,24 @@ import lombok.Setter;
 @Table(name= "ingredienteXreceta")
 public class IngredienteXRecetaModel {
 
+    @EmbeddedId
+    private IngredienteXRecetaId id;
+
+    @ManyToOne
+    @MapsId("recetaId")
+    @JoinColumn(name = "receta_id")
+    private RecetaModel receta;
+
+    @ManyToOne
+    @MapsId("ingredienteId")
+    @JoinColumn(name = "ingrediente_id")
+    private IngredienteModel ingrediente;
+
     @Column(name = "cantidad")
     private float cantidad;
 
     @Column(name = "costo")
     private float costo;
     
-
 
 }
