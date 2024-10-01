@@ -22,6 +22,7 @@ public class IngredienteController {
         return this.ingredienteServices.createIngrediente(ingrediente);
     }
 
+    @GetMapping("")
     @GetMapping
     public List<IngredienteModel> getIngredientes() {
         return ingredienteServices.getIngredientes();

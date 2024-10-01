@@ -28,6 +28,7 @@ public class RecetaController {
         return this.recetaServices.createReceta(receta);
     }
 
+    @GetMapping("")
     @GetMapping
     public List<RecetaModel> getRecetas() {
         return recetaServices.getRecetas();
