@@ -30,9 +30,10 @@ public class IngredienteServices {
         return ingredienteRepository.findById(id)
                 .map(ingrediente -> {
                     ingrediente.setNombre(detallesIngrediente.getNombre());
+                    ingrediente.setMarca(detallesIngrediente.getMarca());
+                    ingrediente.setPrecio(detallesIngrediente.getPrecio());
                     ingrediente.setUnidad_medida(detallesIngrediente.getUnidad_medida());
-                    ingrediente.setCosto_unidad(detallesIngrediente.getCosto_unidad());
-                    ingrediente.setStock(detallesIngrediente.getStock());
+                    ingrediente.setCantidad_paquete(detallesIngrediente.getCantidad_paquete());
                     return ingredienteRepository.save(ingrediente);
                 }).orElseThrow(() -> new RuntimeException("Ingrediente no encontrado"));
     }
