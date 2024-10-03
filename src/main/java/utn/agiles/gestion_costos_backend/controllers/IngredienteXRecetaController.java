@@ -2,12 +2,7 @@ package utn.agiles.gestion_costos_backend.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import utn.agiles.gestion_costos_backend.models.IngredienteXRecetaModel;
 import utn.agiles.gestion_costos_backend.services.IngredienteXRecetaServices;
@@ -20,15 +15,22 @@ public class IngredienteXRecetaController {
     private IngredienteXRecetaServices ingredienteXRecetaServices;
 
     @PostMapping("/crear")
-    public IngredienteXRecetaModel createIngredienteXReceta(@RequestBody IngredienteXRecetaModel ingredienteXReceta) {
-        return this.ingredienteXRecetaServices.createIngredienteXReceta(ingredienteXReceta);
+    public IngredienteXRecetaModel createIngredienteXReceta(@RequestBody IngredienteXRecetaModel ingredienteXRecetaModel) {
+        return this.ingredienteXRecetaServices.createIngredienteXReceta(ingredienteXRecetaModel);
     }
 
-
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteIngredienteXReceta(@PathVariable Long idReceta , Long idIngrediente){
-        ingredienteXRecetaServices.deleteIngredienteXReceta(idReceta, idIngrediente);
-        return ResponseEntity.noContent().build();
+    @DeleteMapping("/{recetaId}/{ingredienteId}")
+    public ResponseEntity<Void> deleteIngredienteXReceta(@PathVariable Long recetaId, @PathVariable Long ingredienteId) {
+        boolean deleted = ingredienteXRecetaServices.deleteIngredienteXReceta(recetaId, ingredienteId);
+        if (deleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
-    
+
+    @PostMapping("/agregar")
+    public IngredienteXRecetaModel addIngredienteToReceta(@RequestParam Long recetaId, @RequestParam Long ingredienteId, @RequestParam float cantidad) {
+        return this.ingredienteXRecetaServices.addIngredienteToReceta(recetaId, ingredienteId, cantidad);
+    }
 }
