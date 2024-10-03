@@ -8,7 +8,8 @@ import utn.agiles.gestion_costos_backend.models.IngredienteXRecetaModel;
 import utn.agiles.gestion_costos_backend.models.RecetaModel;
 import utn.agiles.gestion_costos_backend.repository.IIngredienteXRecetaRepository;
 import utn.agiles.gestion_costos_backend.repository.IRecetaRepository;
-import java.util.List;
+
+
 @Service
 public class IngredienteXRecetaServices {
 
