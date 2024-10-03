@@ -25,9 +25,24 @@ public class IngredienteXRecetaModel {
 
     @Column(name = "cantidad")
     private float cantidad;
-
+    
     @Column(name = "costo")
     private float costo;
-    
 
+    
+    @PrePersist
+    @PreUpdate
+    public void calcularCosto() {
+        if (this.ingrediente != null && this.ingrediente.getCantidad_paquete() != 0) {
+            this.costo = (this.cantidad * this.ingrediente.getPrecio()) / this.ingrediente.getCantidad_paquete();
+        } else {
+            this.costo = 0;
+        }
+    }
+
+
+
+    public float getCosto() {
+        return this.costo;
+    }
 }
