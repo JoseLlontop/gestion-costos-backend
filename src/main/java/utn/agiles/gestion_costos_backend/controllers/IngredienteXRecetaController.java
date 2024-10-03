@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 
 import utn.agiles.gestion_costos_backend.models.IngredienteXRecetaModel;
 import utn.agiles.gestion_costos_backend.services.IngredienteXRecetaServices;
+import java.util.List;
 
 @RestController
 @RequestMapping("api/IngredienteXReceta")
@@ -18,6 +19,11 @@ public class IngredienteXRecetaController {
     public IngredienteXRecetaModel createIngredienteXReceta(@RequestBody IngredienteXRecetaModel ingredienteXRecetaModel) {
         return this.ingredienteXRecetaServices.createIngredienteXReceta(ingredienteXRecetaModel);
     }
+
+    public List<IngredienteXRecetaModel> findByRecetaIdAllIngredientes(@PathVariable Long recetaId) {
+        return ingredienteXRecetaServices.findByRecetaIdAllIngredientes(recetaId);
+    }
+
 
     @DeleteMapping("/{recetaId}/{ingredienteId}")
     public ResponseEntity<Void> deleteIngredienteXReceta(@PathVariable Long recetaId, @PathVariable Long ingredienteId) {

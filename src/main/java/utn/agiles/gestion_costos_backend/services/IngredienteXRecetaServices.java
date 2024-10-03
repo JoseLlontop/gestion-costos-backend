@@ -8,6 +8,7 @@ import utn.agiles.gestion_costos_backend.models.IngredienteXRecetaModel;
 import utn.agiles.gestion_costos_backend.models.RecetaModel;
 import utn.agiles.gestion_costos_backend.repository.IIngredienteXRecetaRepository;
 import utn.agiles.gestion_costos_backend.repository.IRecetaRepository;
+import java.util.List;
 @Service
 public class IngredienteXRecetaServices {
 
@@ -27,6 +28,13 @@ public class IngredienteXRecetaServices {
         return ingredienteXRecetaRepository.save(ingredienteXRecetaModel);
     }
 
+
+    public List<IngredienteXRecetaModel> findByRecetaIdAllIngredientes(Long recetaId) {
+        return ingredienteXRecetaRepository.findByRecetaIdAllIngredientes(recetaId);
+    }
+
+
+
     public boolean deleteIngredienteXReceta(Long recetaId, Long ingredienteId) {
         IngredienteXRecetaId id = new IngredienteXRecetaId(recetaId, ingredienteId);
         if (ingredienteXRecetaRepository.existsById(id)) {
@@ -37,22 +45,22 @@ public class IngredienteXRecetaServices {
         }
     }
 
-   public IngredienteXRecetaModel addIngredienteToReceta(Long recetaId, Long ingredienteId, float cantidad) {
-    IngredienteXRecetaId id = new IngredienteXRecetaId(recetaId, ingredienteId);
-    IngredienteXRecetaModel ingredienteXReceta = new IngredienteXRecetaModel();
-    ingredienteXReceta.setId(id);
-    ingredienteXReceta.setCantidad(cantidad);
+    public IngredienteXRecetaModel addIngredienteToReceta(Long recetaId, Long ingredienteId, float cantidad) {
+        IngredienteXRecetaId id = new IngredienteXRecetaId(recetaId, ingredienteId);
+        IngredienteXRecetaModel ingredienteXReceta = new IngredienteXRecetaModel();
+        ingredienteXReceta.setId(id);
+        ingredienteXReceta.setCantidad(cantidad);
     
-    ingredienteXReceta.calcularCosto();
+        ingredienteXReceta.calcularCosto();
 
-    RecetaModel receta = recetaRepository.findById(recetaId).orElseThrow(() -> new RuntimeException("Receta no encontrada"));
-    receta.getIngredientes().add(ingredienteXReceta); 
-    ingredienteXRecetaRepository.save(ingredienteXReceta);
+        RecetaModel receta = recetaRepository.findById(recetaId).orElseThrow(() -> new RuntimeException("Receta no encontrada"));
+        receta.getIngredientes().add(ingredienteXReceta); 
+        ingredienteXRecetaRepository.save(ingredienteXReceta);
 
-    receta.calcularCostoTotal(); 
-    recetaRepository.save(receta);
-    return ingredienteXReceta;
-}
+        receta.calcularCostoTotal(); 
+        recetaRepository.save(receta);
+        return ingredienteXReceta;
+    }
 
 
 } 
