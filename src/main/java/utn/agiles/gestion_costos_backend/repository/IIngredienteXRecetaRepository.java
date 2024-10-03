@@ -12,7 +12,7 @@ import java.util.List;
 public interface IIngredienteXRecetaRepository extends JpaRepository<IngredienteXRecetaModel, IngredienteXRecetaId> {
     List<IngredienteXRecetaModel> findByRecetaId(Long recetaId);
 
-    @Query("SELECT ir FROM ingredienteXreceta ir JOIN FETCH ir.ingrediente WHERE ir.receta.id = :recetaId")
+    @Query("SELECT ir FROM IngredienteXRecetaModel ir JOIN FETCH ir.ingrediente WHERE ir.receta.id = :recetaId")
     List<IngredienteXRecetaModel> findByRecetaIdAllIngredientes(Long recetaId);
 
 }
