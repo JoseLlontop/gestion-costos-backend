@@ -20,6 +20,7 @@ public class IngredienteXRecetaController {
         return this.ingredienteXRecetaServices.createIngredienteXReceta(ingredienteXRecetaModel);
     }
 
+    @PostMapping("/getxRecetaId={recetaId}")
     public List<IngredienteXRecetaModel> findByRecetaIdAllIngredientes(@PathVariable Long recetaId) {
         return ingredienteXRecetaServices.findByRecetaIdAllIngredientes(recetaId);
     }
