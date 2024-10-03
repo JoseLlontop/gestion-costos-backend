@@ -29,9 +29,11 @@ public class RecetaController {
     }
 
     @GetMapping("")
-    @GetMapping
-    public List<RecetaModel> getRecetas() {
-        return recetaServices.getRecetas();
+    public ResponseEntity<List<RecetaModel>> getRecetas() {
+        List<RecetaModel> recetas = recetaServices.getRecetas();
+        return recetas.isEmpty()
+            ? ResponseEntity.noContent().build()
+            : ResponseEntity.ok(recetas);
     }
 
     @GetMapping("/{id}")
