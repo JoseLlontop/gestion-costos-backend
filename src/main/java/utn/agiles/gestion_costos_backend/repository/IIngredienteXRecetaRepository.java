@@ -2,9 +2,11 @@ package utn.agiles.gestion_costos_backend.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import utn.agiles.gestion_costos_backend.models.IngredienteXRecetaId;
 import utn.agiles.gestion_costos_backend.models.IngredienteXRecetaModel;
+import utn.agiles.gestion_costos_backend.DTO.*;
 
 import java.util.List;
 
@@ -12,7 +14,9 @@ import java.util.List;
 public interface IIngredienteXRecetaRepository extends JpaRepository<IngredienteXRecetaModel, IngredienteXRecetaId> {
     List<IngredienteXRecetaModel> findByRecetaId(Long recetaId);
 
-    @Query("SELECT ir FROM ingredienteXreceta ir JOIN FETCH ir.ingrediente WHERE ir.receta.id = :recetaId")
-    List<IngredienteXRecetaModel> findByRecetaIdAllIngredientes(Long recetaId);
+    @Query("SELECT new utn.agiles.gestion_costos_backend.DTO.IngredienteXRecetaDto(ir.cantidad, ir.costo, i.nombre, i.marca) " +
+        "FROM IngredienteXRecetaModel ir INNER JOIN ir.ingrediente i " +
+        "WHERE ir.id.recetaId = :recetaId")
+    List<IngredienteXRecetaDto> findIngredientesByRecetaId(@Param("recetaId") Long recetaId);
 
 }

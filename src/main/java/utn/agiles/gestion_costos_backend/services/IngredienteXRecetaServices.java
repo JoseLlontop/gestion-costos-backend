@@ -29,11 +29,6 @@ public class IngredienteXRecetaServices {
     }
 
 
-    public List<IngredienteXRecetaModel> findByRecetaIdAllIngredientes(Long recetaId) {
-        return ingredienteXRecetaRepository.findByRecetaIdAllIngredientes(recetaId);
-    }
-
-
 
     public boolean deleteIngredienteXReceta(Long recetaId, Long ingredienteId) {
         IngredienteXRecetaId id = new IngredienteXRecetaId(recetaId, ingredienteId);

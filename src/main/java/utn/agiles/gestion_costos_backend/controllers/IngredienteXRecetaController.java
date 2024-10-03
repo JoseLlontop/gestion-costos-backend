@@ -5,24 +5,33 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import utn.agiles.gestion_costos_backend.models.IngredienteXRecetaModel;
+import utn.agiles.gestion_costos_backend.repository.IIngredienteXRecetaRepository;
 import utn.agiles.gestion_costos_backend.services.IngredienteXRecetaServices;
+import utn.agiles.gestion_costos_backend.DTO.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/IngredienteXReceta")
+@RequestMapping("api/IngredientesXReceta")
 public class IngredienteXRecetaController {
 
     @Autowired
     private IngredienteXRecetaServices ingredienteXRecetaServices;
 
+    @Autowired
+    private IIngredienteXRecetaRepository ingredienteXRecetaRepository;
+
+    
+
     @PostMapping("/crear")
-    public IngredienteXRecetaModel createIngredienteXReceta(@RequestBody IngredienteXRecetaModel ingredienteXRecetaModel) {
-        return this.ingredienteXRecetaServices.createIngredienteXReceta(ingredienteXRecetaModel);
+    public ResponseEntity<IngredienteXRecetaModel> createIngredienteXReceta(@RequestBody IngredienteXRecetaModel ingredienteXRecetaModel){
+        return ResponseEntity.ok(this.ingredienteXRecetaServices.createIngredienteXReceta(ingredienteXRecetaModel));
     }
 
     @GetMapping("/getxRecetaId={recetaId}")
-    public List<IngredienteXRecetaModel> findByRecetaIdAllIngredientes(@PathVariable Long recetaId) {
-        return ingredienteXRecetaServices.findByRecetaIdAllIngredientes(recetaId);
+    public ResponseEntity<List<IngredienteXRecetaDto>> findIngredientesByRecetaId(@PathVariable Long recetaId) {
+        List<IngredienteXRecetaDto> ingredientesXReceta = ingredienteXRecetaRepository.findIngredientesByRecetaId(recetaId);
+        
+        return ResponseEntity.ok(ingredientesXReceta); 
     }
 
 
