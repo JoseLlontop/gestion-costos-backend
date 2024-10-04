@@ -6,12 +6,12 @@ import lombok.Setter;
 @Setter
 @Getter
 public class IngredienteXRecetaDto {
-    private int cantidad;
-    private double costo;
+    private float cantidad;
+    private float costo;
     private String nombre;
     private String marca;
 
-    public IngredienteXRecetaDto(int cantidad, double costo, String nombre, String marca) {
+    public IngredienteXRecetaDto(float cantidad, float costo, String nombre, String marca) {
         this.cantidad = cantidad;
         this.costo = costo;
         this.nombre = nombre;
