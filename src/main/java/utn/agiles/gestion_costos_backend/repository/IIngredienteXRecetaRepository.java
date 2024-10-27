@@ -18,5 +18,6 @@ public interface IIngredienteXRecetaRepository extends JpaRepository<Ingrediente
         "FROM IngredienteXRecetaModel ir INNER JOIN ir.ingrediente i " +
         "WHERE ir.id.recetaId = :recetaId")
     List<IngredienteXRecetaDto> findIngredientesByRecetaId(@Param("recetaId") Long recetaId);
+    List<IngredienteXRecetaModel> findByIngredienteId( Long recetaId);
 
 }
