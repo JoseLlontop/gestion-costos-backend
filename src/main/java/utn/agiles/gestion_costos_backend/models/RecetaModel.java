@@ -50,15 +50,20 @@ public class RecetaModel {
 
     public void calcularCostoTotal() {
         if (ingredientes != null && !ingredientes.isEmpty()) {
+            // Calcula el costo para cada ingrediente en la lista
+            ingredientes.forEach(IngredienteXRecetaModel::calcularCosto);
+    
+            // Suma todos los costos para obtener el costo total
             this.costoTotal = ingredientes.stream()
                 .map(IngredienteXRecetaModel::getCosto) 
                 .reduce(0.0f, Float::sum); 
         } else {
             this.costoTotal = 0;
         }
-
+    
         calcularCostoPorPorcion();
     }
+    
 
     private void calcularCostoPorPorcion() {
         if (porcionesRinde <= 0) {
