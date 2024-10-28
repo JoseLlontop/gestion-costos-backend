@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import utn.agiles.gestion_costos_backend.models.RecetaModel;
 import utn.agiles.gestion_costos_backend.services.RecetaServices;
+import utn.agiles.gestion_costos_backend.DTO.PorcentajeGananciaDto;
+import utn.agiles.gestion_costos_backend.DTO.PrecioVentaDto;
 
 @RestController
 @RequestMapping("/api/recetas")
@@ -55,5 +57,18 @@ public class RecetaController {
     public ResponseEntity<RecetaModel> deleteReceta(@PathVariable Long id){
         recetaServices.deleteReceta(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/porcentajeganancia")
+    public float updatePorcentajeGanancia (@RequestBody PorcentajeGananciaDto dto){
+        
+        return recetaServices.calcularPorcentajeGanancia(dto.getIdReceta() , dto.getPrecioVenta());
+
+    }
+
+    @PostMapping("/precioventa")
+    public float updatePrecioVenta (@RequestBody PrecioVentaDto dto) {
+
+        return recetaServices.calcularPrecioVenta(dto.getRecetaId(),dto.getPorcentajeGanancia() );
     }
 }
