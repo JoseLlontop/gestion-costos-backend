@@ -31,6 +31,7 @@ public class RecetaServices {
             receta.setNombreReceta(detallesReceta.getNombreReceta());
             receta.setDescripcion(detallesReceta.getDescripcion());
             receta.setPorcionesRinde(detallesReceta.getPorcionesRinde());
+            receta.setPorcentajeGanancia(detallesReceta.getPorcentajeGanancia());
             
             return recetaRepository.save(receta);
         }).orElseThrow(() -> new RuntimeException("Receta no encontrada"));
@@ -41,42 +42,6 @@ public class RecetaServices {
         recetaRepository.deleteById(id);
     }
 
-    public float calcularPorcentajeGanancia (long idReceta , float precioVenta){
-        Optional<RecetaModel> optionalReceta = recetaRepository.findById(idReceta);
-
-        if (optionalReceta == null) {
-            throw new IllegalArgumentException("No se encontro receta con ese Id.");
-        }
-
-        RecetaModel receta = optionalReceta.get();
-
-        if (precioVenta < 0 ) {
-            throw new IllegalArgumentException("El precio de venta no puede ser negativo");
-        }
-
-        float porcentajeGanancia = receta.calcularPorcentajeGanancia(precioVenta);
-
-
-        return porcentajeGanancia;
-    }
-
-    public float calcularPrecioVenta (long idReceta , float porcentajeGanancia) {
-        Optional<RecetaModel> optionalReceta = recetaRepository.findById(idReceta);
-
-        if (optionalReceta == null ) {
-            throw new IllegalArgumentException("No se encontro receta con ese id");
-        }
-        
-        RecetaModel receta = optionalReceta.get();
-
-        float precioVenta = receta.calcularPrecioVenta(porcentajeGanancia);
-
-        return precioVenta;
-
-    }
-
-
-
-
+    
 
 }

@@ -59,16 +59,5 @@ public class RecetaController {
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/porcentajeganancia")
-    public float updatePorcentajeGanancia (@RequestBody PorcentajeGananciaDto dto){
-        
-        return recetaServices.calcularPorcentajeGanancia(dto.getIdReceta() , dto.getPrecioVenta());
 
-    }
-
-    @PostMapping("/precioventa")
-    public float updatePrecioVenta (@RequestBody PrecioVentaDto dto) {
-
-        return recetaServices.calcularPrecioVenta(dto.getRecetaId(),dto.getPorcentajeGanancia() );
-    }
 }

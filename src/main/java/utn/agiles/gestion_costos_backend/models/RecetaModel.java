@@ -28,13 +28,10 @@ public class RecetaModel {
     @Column(name = "porciones_rinde")
     private Float porcionesRinde;
     
-    @Column (name = "porcentaje_ganancia")
+    @Column(name = "porcentaje_ganancia")
     private float porcentajeGanancia;
 
-    @Column (name = "precioVenta")
-    private float precioVenta;
-
-    @JsonIgnore // Esto evita la recursión
+    @JsonIgnore // Evita la recursión
     @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL)
     private List<IngredienteXRecetaModel> ingredientes;
     
@@ -56,20 +53,15 @@ public class RecetaModel {
 
     public void calcularCostoTotal() {
         if (ingredientes != null && !ingredientes.isEmpty()) {
-            // Calcula el costo para cada ingrediente en la lista
             ingredientes.forEach(IngredienteXRecetaModel::calcularCosto);
-    
-            // Suma todos los costos para obtener el costo total
             this.costoTotal = ingredientes.stream()
-                .map(IngredienteXRecetaModel::getCosto) 
+                .map(IngredienteXRecetaModel::getCosto)
                 .reduce(0.0f, Float::sum); 
         } else {
             this.costoTotal = 0;
         }
-    
         calcularCostoPorPorcion();
     }
-    
 
     private void calcularCostoPorPorcion() {
         if (porcionesRinde <= 0) {
@@ -78,24 +70,19 @@ public class RecetaModel {
         this.costoPorPorcion = this.costoTotal / this.porcionesRinde;
     }
     
-    public float calcularPorcentajeGanancia (float precioVenta) {
-        this.precioVenta = precioVenta;
-        calcularCostoPorPorcion();
-        this.porcentajeGanancia =  ((precioVenta*100)/this.costoPorPorcion)-100 ; 
-
-        return this.porcentajeGanancia;
+    @Transient
+    public float getPrecioVenta() {
+        return calcularPrecioVentaPorPorcion();
     }
-
-    public float calcularPrecioVenta (float porcentajeGanancia) {
-        this.porcentajeGanancia = porcentajeGanancia;
-        calcularCostoPorPorcion();
-        this.precioVenta = ((100 + porcentajeGanancia) * costoPorPorcion ) / 100;
-
-        return this.precioVenta;
-
+    
+    private float calcularPrecioVentaPorPorcion() {
+        calcularCostoTotal();
+        
+        if (porcentajeGanancia <= 0) {
+            throw new IllegalArgumentException("El porcentaje de ganancia deseado debe ser mayor a cero.");
+        }
+    
+        float costoPorPorcion = getCostoPorPorcion();
+        return costoPorPorcion * (1 + (porcentajeGanancia / 100.0f));
     }
-
 }
-
-
-
