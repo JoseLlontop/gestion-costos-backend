@@ -58,5 +58,20 @@ public class IngredienteXRecetaServices {
         return ingredienteXReceta;
     }
 
+    public IngredienteXRecetaModel updateIngredienteXReceta(IngredienteXRecetaModel ingredienteXRecetaModel) {
+        IngredienteXRecetaId id = new IngredienteXRecetaId(   
+        ingredienteXRecetaModel.getReceta().getId(),
+        ingredienteXRecetaModel.getIngrediente().getId());
+
+        if (ingredienteXRecetaRepository.existsById(id)) {
+            ingredienteXRecetaModel.setId(id);
+            ingredienteXRecetaModel.calcularCosto();
+            return ingredienteXRecetaRepository.save(ingredienteXRecetaModel);
+        } else {
+            throw new RuntimeException("Ingrediente no encontrado");
+        }
+        
+    }
+
 
 } 

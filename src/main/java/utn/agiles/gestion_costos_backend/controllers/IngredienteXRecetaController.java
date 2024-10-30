@@ -49,4 +49,10 @@ public class IngredienteXRecetaController {
     public IngredienteXRecetaModel addIngredienteToReceta(@RequestParam Long recetaId, @RequestParam Long ingredienteId, @RequestParam float cantidad) {
         return this.ingredienteXRecetaServices.addIngredienteToReceta(recetaId, ingredienteId, cantidad);
     }
+
+    @PutMapping("/modificarCantidad")
+    public ResponseEntity<IngredienteXRecetaModel> updateIngredienteXReceta(@RequestBody IngredienteXRecetaModel ingredienteXRecetaModel){
+        return ResponseEntity.ok(this.ingredienteXRecetaServices.updateIngredienteXReceta(ingredienteXRecetaModel));
+    }
+
 }
