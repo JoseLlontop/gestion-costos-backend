@@ -1,11 +1,14 @@
 package utn.agiles.gestion_costos_backend.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -52,6 +55,19 @@ public class RecetaController {
             : ResponseEntity.notFound().build();
 
     }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<RecetaModel> updateRecetaAtribute(@PathVariable Long id, @RequestBody Map<String, Object> detallesReceta) {
+        try {
+            RecetaModel updatedReceta = recetaServices.updateAttributesReceta(id, detallesReceta);
+            return ResponseEntity.ok(updatedReceta);
+        } catch (Exception e) {
+            // Registra la excepción para poder revisarla
+            e.printStackTrace(); // Puedes usar un logger en lugar de esto
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
     @DeleteMapping("/{id}")
     public ResponseEntity<RecetaModel> deleteReceta(@PathVariable Long id){

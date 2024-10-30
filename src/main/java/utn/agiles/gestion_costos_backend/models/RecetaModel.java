@@ -29,7 +29,7 @@ public class RecetaModel {
     private Float porcionesRinde;
     
     @Column(name = "porcentaje_ganancia")
-    private float porcentajeGanancia;
+    private Double porcentajeGanancia;
 
     @JsonIgnore // Evita la recursión
     @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL)
@@ -71,11 +71,11 @@ public class RecetaModel {
     }
     
     @Transient
-    public float getPrecioVenta() {
+    public double getPrecioVenta() {
         return calcularPrecioVentaPorPorcion();
     }
     
-    private float calcularPrecioVentaPorPorcion() {
+    private double calcularPrecioVentaPorPorcion() {
         calcularCostoTotal();
         
         if (porcentajeGanancia <= 0) {
@@ -83,6 +83,6 @@ public class RecetaModel {
         }
     
         float costoPorPorcion = getCostoPorPorcion();
-        return costoPorPorcion * (1 + (porcentajeGanancia / 100.0f));
+        return costoPorPorcion * (1 + (porcentajeGanancia / 100.0));
     }
 }
