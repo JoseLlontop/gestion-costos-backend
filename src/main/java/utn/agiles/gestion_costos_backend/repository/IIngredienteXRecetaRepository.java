@@ -14,7 +14,7 @@ import java.util.List;
 public interface IIngredienteXRecetaRepository extends JpaRepository<IngredienteXRecetaModel, IngredienteXRecetaId> {
     List<IngredienteXRecetaModel> findByRecetaId(Long recetaId);
 
-    @Query("SELECT new utn.agiles.gestion_costos_backend.DTO.IngredienteXRecetaDto(ir.cantidad, ir.costo, i.nombre, i.marca) " +
+    @Query("SELECT new utn.agiles.gestion_costos_backend.DTO.IngredienteXRecetaDto(i.id, ir.cantidad, ir.costo, i.nombre, i.marca) " +
         "FROM IngredienteXRecetaModel ir INNER JOIN ir.ingrediente i " +
         "WHERE ir.id.recetaId = :recetaId")
     List<IngredienteXRecetaDto> findIngredientesByRecetaId(@Param("recetaId") Long recetaId);
