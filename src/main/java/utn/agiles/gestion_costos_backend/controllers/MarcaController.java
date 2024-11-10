@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import utn.agiles.gestion_costos_backend.services.MarcaServices;
 import utn.agiles.gestion_costos_backend.models.MarcaModel;
+import utn.agiles.gestion_costos_backend.repository.IMarcaRepository;
 
 @RestController
 @RequestMapping("/api/marcas")
