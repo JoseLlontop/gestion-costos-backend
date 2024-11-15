@@ -4,8 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.ArrayList;
 import java.util.List;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Setter
@@ -15,7 +15,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 public class RecetaModel {
 
     @Id
-    @Column(name = "id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -31,10 +30,19 @@ public class RecetaModel {
     @Column(name = "porcentaje_ganancia")
     private Double porcentajeGanancia;
 
-    @JsonIgnore // Evita la recursión
-    @OneToMany(mappedBy = "receta", cascade = CascadeType.ALL)
+    @JsonIgnore
+    @OneToMany(mappedBy = "receta")
     private List<IngredienteXRecetaModel> ingredientes;
-    
+
+    // Relación @ManyToMany con CostoModel
+    @ManyToMany
+    @JoinTable(
+        name = "receta_costo",
+        joinColumns = @JoinColumn(name = "receta_id"),
+        inverseJoinColumns = @JoinColumn(name = "costo_id")
+    )
+    private List<CostoModel> costosAdicionales = new ArrayList<>();
+
     @Transient
     private float costoTotal;
 
@@ -52,14 +60,24 @@ public class RecetaModel {
     }
 
     public void calcularCostoTotal() {
+        float costoIngredientes = 0.0f;
+        float costoProduccion = 0.0f;
+    
         if (ingredientes != null && !ingredientes.isEmpty()) {
             ingredientes.forEach(IngredienteXRecetaModel::calcularCosto);
-            this.costoTotal = ingredientes.stream()
+            costoIngredientes = ingredientes.stream()
                 .map(IngredienteXRecetaModel::getCosto)
-                .reduce(0.0f, Float::sum); 
-        } else {
-            this.costoTotal = 0;
+                .reduce(0.0f, Float::sum);
         }
+    
+        if (costosAdicionales != null && !costosAdicionales.isEmpty()) {
+            costosAdicionales.forEach(CostoModel::calcularTotalCosto);
+            costoProduccion = costosAdicionales.stream()
+                .map(costo -> costo.getTotalCosto() != null ? costo.getTotalCosto() : 0.0f)
+                .reduce(0.0f, Float::sum);
+        }
+    
+        this.costoTotal = costoIngredientes + costoProduccion;
         calcularCostoPorPorcion();
     }
 
@@ -69,19 +87,17 @@ public class RecetaModel {
         }
         this.costoPorPorcion = this.costoTotal / this.porcionesRinde;
     }
-    
+
     @Transient
     public double getPrecioVenta() {
         return calcularPrecioVentaPorPorcion();
     }
-    
+
     private double calcularPrecioVentaPorPorcion() {
         calcularCostoTotal();
-        
         if (porcentajeGanancia <= 0) {
-            throw new IllegalArgumentException("El porcentaje de ganancia deseado debe ser mayor a cero.");
+            throw new IllegalArgumentException("El porcentaje de ganancia debe ser mayor a cero.");
         }
-    
         float costoPorPorcion = getCostoPorPorcion();
         return costoPorPorcion * (1 + (porcentajeGanancia / 100.0));
     }

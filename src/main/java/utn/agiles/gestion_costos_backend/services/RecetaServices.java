@@ -1,15 +1,18 @@
 package utn.agiles.gestion_costos_backend.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.util.ReflectionUtils;
 import org.springframework.stereotype.Service;
+import jakarta.transaction.Transactional;
+import utn.agiles.gestion_costos_backend.models.CostoModel;
 import utn.agiles.gestion_costos_backend.models.RecetaModel;
 import utn.agiles.gestion_costos_backend.repository.IRecetaRepository;
+import utn.agiles.gestion_costos_backend.repository.ICostoRepository;
 
-import java.lang.reflect.Field;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.lang.reflect.Field;
+import org.springframework.data.util.ReflectionUtils;
 
 @Service
 public class RecetaServices {
@@ -17,17 +20,43 @@ public class RecetaServices {
     @Autowired
     private IRecetaRepository recetaRepository;
 
+    @Autowired
+    private ICostoRepository costoRepository;
+
     public List<RecetaModel> getRecetas() {
-        return recetaRepository.findAll();
+        List<RecetaModel> recetas = recetaRepository.findAll();
+        
+        for (RecetaModel receta : recetas) {
+            receta.calcularCostoTotal();  
+        }
+        
+        return recetas;
     }
 
     public Optional<RecetaModel> getRecetaPorId(Long id) {
         return recetaRepository.findById(id);
     }
 
+    @Transactional
     public RecetaModel createReceta(RecetaModel receta) {
-        return recetaRepository.save(receta);
+        receta.calcularCostoTotal();
+    
+        RecetaModel recetaGuardada = recetaRepository.save(receta);
+    
+        List<CostoModel> costos = costoRepository.findAll();
+    
+        // Asignar los costos a la receta
+        for (CostoModel costo : costos) {
+            costo.getRecetas().add(recetaGuardada);  
+    
+            recetaGuardada.getCostosAdicionales().add(costo);  
+        }
+    
+        costoRepository.saveAll(costos);
+    
+        return recetaGuardada;  
     }
+    
 
     public RecetaModel updateReceta(Long id, RecetaModel detallesReceta) {
         return recetaRepository.findById(id).map(receta -> {
@@ -59,7 +88,7 @@ public class RecetaServices {
         }).orElseThrow(() -> new RuntimeException("Receta no encontrada"));
     }
     
-
+    
     public void deleteReceta(Long id) {
         recetaRepository.deleteById(id);
     }
@@ -67,3 +96,4 @@ public class RecetaServices {
     
 
 }
+
