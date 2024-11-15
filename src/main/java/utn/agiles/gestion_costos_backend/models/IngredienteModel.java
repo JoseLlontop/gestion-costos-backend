@@ -28,6 +28,6 @@ public class IngredienteModel {
     private String unidad_medida;
 
     @Column(name = "cantidad_paquete")
-    private int cantidad_paquete;
+    private float cantidad_paquete;
 
 }
