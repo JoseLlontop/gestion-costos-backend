@@ -45,4 +45,6 @@ public class IngredienteXRecetaModel {
     public float getCosto() {
         return this.costo;
     }
+
+   
 }
