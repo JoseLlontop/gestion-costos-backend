@@ -69,13 +69,32 @@ public class IngredienteXRecetaServices {
 
     public List<Long> addIngredienteFromReceta(Long recetaId, Long recetaIngredientesId){
 
-        List<IngredienteXRecetaModel> ingredientesXReceta = ingredienteXRecetaRepository.findByRecetaId(recetaIngredientesId);
+        List<IngredienteXRecetaModel> ingredientesXRecetaAAgregar = ingredienteXRecetaRepository.findByRecetaId(recetaIngredientesId);
 
         List<Long> ids = new ArrayList<Long>();
 
+        RecetaModel receta = recetaRepository.findById(recetaId).orElseThrow(() -> new RuntimeException("Receta no encontrada"));
+
         ids.add(recetaId);
-        for (IngredienteXRecetaModel ingredienteXReceta : ingredientesXReceta) {
+        for (IngredienteXRecetaModel ingredienteXReceta : ingredientesXRecetaAAgregar) {
             ids.add(ingredienteXReceta.getIngrediente().getId());
+            IngredienteModel ing = ingredienteRepository.findById(ingredienteXReceta.getIngrediente().getId()).orElseThrow(() -> new RuntimeException("Ingrediente no encontrado"));
+
+
+            IngredienteXRecetaId id = new IngredienteXRecetaId(recetaId, ingredienteXReceta.getIngrediente().getId());
+
+
+            IngredienteXRecetaModel nuevoIngredienteXReceta = new IngredienteXRecetaModel();
+
+            nuevoIngredienteXReceta.setId(id);
+            nuevoIngredienteXReceta.setCantidad(ingredienteXReceta.getCantidad());
+            nuevoIngredienteXReceta.setIngrediente(ing);
+            nuevoIngredienteXReceta.setReceta(receta);
+            nuevoIngredienteXReceta.calcularCosto();
+
+        
+            ingredienteXRecetaRepository.save(nuevoIngredienteXReceta);
+           
         }
         return ids;
     };
