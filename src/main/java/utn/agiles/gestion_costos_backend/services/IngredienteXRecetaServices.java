@@ -1,11 +1,17 @@
 package utn.agiles.gestion_costos_backend.services;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import utn.agiles.gestion_costos_backend.DTO.IngredienteXRecetaDto;
+import utn.agiles.gestion_costos_backend.models.IngredienteModel;
 import utn.agiles.gestion_costos_backend.models.IngredienteXRecetaId;
 import utn.agiles.gestion_costos_backend.models.IngredienteXRecetaModel;
 import utn.agiles.gestion_costos_backend.models.RecetaModel;
+import utn.agiles.gestion_costos_backend.repository.IIngredienteRepository;
 import utn.agiles.gestion_costos_backend.repository.IIngredienteXRecetaRepository;
 import utn.agiles.gestion_costos_backend.repository.IRecetaRepository;
 
@@ -18,6 +24,9 @@ public class IngredienteXRecetaServices {
     
     @Autowired
     private IRecetaRepository recetaRepository; 
+
+    @Autowired
+    private IIngredienteRepository ingredienteRepository; 
     
     public IngredienteXRecetaModel createIngredienteXReceta(IngredienteXRecetaModel ingredienteXRecetaModel) {
         IngredienteXRecetaId id = new IngredienteXRecetaId(
@@ -57,6 +66,38 @@ public class IngredienteXRecetaServices {
         recetaRepository.save(receta);
         return ingredienteXReceta;
     }
+
+    public List<Long> addIngredienteFromReceta(Long recetaId, Long recetaIngredientesId){
+
+        List<IngredienteXRecetaModel> ingredientesXRecetaAAgregar = ingredienteXRecetaRepository.findByRecetaId(recetaIngredientesId);
+
+        List<Long> ids = new ArrayList<Long>();
+
+        RecetaModel receta = recetaRepository.findById(recetaId).orElseThrow(() -> new RuntimeException("Receta no encontrada"));
+
+        ids.add(recetaId);
+        for (IngredienteXRecetaModel ingredienteXReceta : ingredientesXRecetaAAgregar) {
+            ids.add(ingredienteXReceta.getIngrediente().getId());
+            IngredienteModel ing = ingredienteRepository.findById(ingredienteXReceta.getIngrediente().getId()).orElseThrow(() -> new RuntimeException("Ingrediente no encontrado"));
+
+
+            IngredienteXRecetaId id = new IngredienteXRecetaId(recetaId, ingredienteXReceta.getIngrediente().getId());
+
+
+            IngredienteXRecetaModel nuevoIngredienteXReceta = new IngredienteXRecetaModel();
+
+            nuevoIngredienteXReceta.setId(id);
+            nuevoIngredienteXReceta.setCantidad(ingredienteXReceta.getCantidad());
+            nuevoIngredienteXReceta.setIngrediente(ing);
+            nuevoIngredienteXReceta.setReceta(receta);
+            nuevoIngredienteXReceta.calcularCosto();
+
+        
+            ingredienteXRecetaRepository.save(nuevoIngredienteXReceta);
+           
+        }
+        return ids;
+    };
 
     public IngredienteXRecetaModel updateIngredienteXReceta(IngredienteXRecetaModel ingredienteXRecetaModel) {
         IngredienteXRecetaId id = new IngredienteXRecetaId(   
